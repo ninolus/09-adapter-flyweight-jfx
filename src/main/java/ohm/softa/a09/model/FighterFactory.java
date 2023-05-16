@@ -10,6 +10,8 @@ import ohm.softa.a09.resource.ResourceLoader;
 import ohm.softa.a09.util.NameGenerator;
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -24,12 +26,25 @@ public final class FighterFactory {
 	private final Random random;
 	private final NameGenerator nameGenerator;
 
-	private final FighterFlyweightFactory flyweightFactory;
+	private Map<String, FighterFlyweight> flyweights = new HashMap<>();
+	private final ResourceLoader<Image> imageResourceLoader;
+
 
 	public FighterFactory() {
 		nameGenerator = new NameGenerator();
 		random = new Random();
-		flyweightFactory = new FighterFlyweightFactory();
+		imageResourceLoader = new ResourceLoader<>(Image::new);
+
+	}
+
+	public FighterFlyweight getFlyweight(String path) {
+		if (flyweights.containsKey(path)) {
+			return flyweights.get(path);
+		}
+
+		FighterFlyweight fw = new FighterFlyweight(path, imageResourceLoader);
+		flyweights.put(path, fw);
+		return fw;
 	}
 
 	/**
@@ -41,17 +56,17 @@ public final class FighterFactory {
 	public Fighter createFighter() {
 		switch (random.nextInt(NumberOfKnownFighterTypes)) {
 			case 0:
-				return new AWing(nameGenerator.generateName(), flyweightFactory.getFlyweight("fighter/awing.jpg"));
+				return new AWing(nameGenerator.generateName(), getFlyweight("fighter/awing.jpg"));
 			case 1:
-				return new XWing(nameGenerator.generateName(), flyweightFactory.getFlyweight("fighter/xwing.jpg"));
+				return new XWing(nameGenerator.generateName(), getFlyweight("fighter/xwing.jpg"));
 			case 2:
-				return new YWing(nameGenerator.generateName(), flyweightFactory.getFlyweight("fighter/ywing.jpg"));
+				return new YWing(nameGenerator.generateName(), getFlyweight("fighter/ywing.jpg"));
 			case 3:
-				return new TieBomber(nameGenerator.generateName(), flyweightFactory.getFlyweight("fighter/tiebomber.jpg"));
+				return new TieBomber(nameGenerator.generateName(), getFlyweight("fighter/tiebomber.jpg"));
 			case 4:
-				return new TieFighter(nameGenerator.generateName(), flyweightFactory.getFlyweight("fighter/tiefighter.jpg"));
+				return new TieFighter(nameGenerator.generateName(), getFlyweight("fighter/tiefighter.jpg"));
 			default:
-				return new TieInterceptor(nameGenerator.generateName(), flyweightFactory.getFlyweight("fighter/tieinterceptor.jpg"));
+				return new TieInterceptor(nameGenerator.generateName(), getFlyweight("fighter/tieinterceptor.jpg"));
 		}
 	}
 }

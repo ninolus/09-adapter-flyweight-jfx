@@ -34,7 +34,7 @@ public final class FighterImageCellValueFactory implements Callback<TableColumn.
 
 	@Override
 	public ObservableValue<ImageView> call(final TableColumn.CellDataFeatures<Fighter, ImageView> param) {
-		var imageView = new ImageView(param.getValue().getFighterImage());
+		var imageView = new ImageView(param.getValue().getFighterFlyweight().getFighterImage());
 
 		imageView.setPreserveRatio(true);
 		imageView.setFitWidth(this.imageWidth);

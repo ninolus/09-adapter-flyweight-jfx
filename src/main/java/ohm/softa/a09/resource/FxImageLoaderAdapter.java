@@ -12,8 +12,7 @@ public class FxImageLoaderAdapter {
 	}
 
 	public Image loadImage(String resourcePath) {
-		ClassLoader cl = ClassLoader.getSystemClassLoader();
-		return resourceLoader.loadResource(cl, resourcePath);
+		return resourceLoader.loadResource(ClassLoader.getSystemClassLoader(), resourcePath);
 	}
 
 	public Image loadImage(ClassLoader resoucreContext, String resourcePath) {

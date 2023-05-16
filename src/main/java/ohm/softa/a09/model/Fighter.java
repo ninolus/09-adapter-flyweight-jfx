@@ -11,19 +11,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public abstract class Fighter {
 
 	private final String pilot;
-	private final FighterFlyweight fighterFlyweight;
+	private final Image fighterImage;
 
-	public Fighter(String pilot, FighterFlyweight fighterFlyweight) {
+	public Fighter(String pilot, Image fighterImage) {
 		this.pilot = pilot;
-		this.fighterFlyweight = fighterFlyweight;
+		this.fighterImage = fighterImage;
 	}
 
 	public String getPilot() {
 		return pilot;
 	}
 
-	public FighterFlyweight getFighterFlyweight() {
-		return fighterFlyweight;
+	public Image getFighterImage() {
+		return fighterImage;
 	}
 
 	public abstract Force getSideOfForce();

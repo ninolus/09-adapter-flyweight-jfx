@@ -26,7 +26,7 @@ public final class FighterFactory {
 	private final Random random;
 	private final NameGenerator nameGenerator;
 
-	private Map<String, FighterFlyweight> flyweights = new HashMap<>();
+	private Map<String, Image> imageCache = new HashMap<>();
 	private final ResourceLoader<Image> imageResourceLoader;
 
 
@@ -37,14 +37,13 @@ public final class FighterFactory {
 
 	}
 
-	public FighterFlyweight getFlyweight(String path) {
-		if (flyweights.containsKey(path)) {
-			return flyweights.get(path);
+	public Image getImage(String path) {
+		if (imageCache.containsKey(path)) {
+			return imageCache.get(path);
 		}
+		this.imageCache.put(path, imageResourceLoader.loadResource(ClassLoader.getSystemClassLoader(), path));
+		return this.imageCache.get(path);
 
-		FighterFlyweight fw = new FighterFlyweight(path, imageResourceLoader);
-		flyweights.put(path, fw);
-		return fw;
 	}
 
 	/**
@@ -56,17 +55,17 @@ public final class FighterFactory {
 	public Fighter createFighter() {
 		switch (random.nextInt(NumberOfKnownFighterTypes)) {
 			case 0:
-				return new AWing(nameGenerator.generateName(), getFlyweight("fighter/awing.jpg"));
+				return new AWing(nameGenerator.generateName(), getImage("fighter/awing.jpg"));
 			case 1:
-				return new XWing(nameGenerator.generateName(), getFlyweight("fighter/xwing.jpg"));
+				return new XWing(nameGenerator.generateName(), getImage("fighter/xwing.jpg"));
 			case 2:
-				return new YWing(nameGenerator.generateName(), getFlyweight("fighter/ywing.jpg"));
+				return new YWing(nameGenerator.generateName(), getImage("fighter/ywing.jpg"));
 			case 3:
-				return new TieBomber(nameGenerator.generateName(), getFlyweight("fighter/tiebomber.jpg"));
+				return new TieBomber(nameGenerator.generateName(), getImage("fighter/tiebomber.jpg"));
 			case 4:
-				return new TieFighter(nameGenerator.generateName(), getFlyweight("fighter/tiefighter.jpg"));
+				return new TieFighter(nameGenerator.generateName(), getImage("fighter/tiefighter.jpg"));
 			default:
-				return new TieInterceptor(nameGenerator.generateName(), getFlyweight("fighter/tieinterceptor.jpg"));
+				return new TieInterceptor(nameGenerator.generateName(), getImage("fighter/tieinterceptor.jpg"));
 		}
 	}
 }

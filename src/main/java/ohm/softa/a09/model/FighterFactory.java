@@ -6,6 +6,7 @@ import ohm.softa.a09.model.empire.TieInterceptor;
 import ohm.softa.a09.model.rebellion.AWing;
 import ohm.softa.a09.model.rebellion.XWing;
 import ohm.softa.a09.model.rebellion.YWing;
+import ohm.softa.a09.resource.FxImageLoaderAdapter;
 import ohm.softa.a09.resource.ResourceLoader;
 import ohm.softa.a09.util.NameGenerator;
 import javafx.scene.image.Image;
@@ -27,13 +28,13 @@ public final class FighterFactory {
 	private final NameGenerator nameGenerator;
 
 	private Map<String, Image> imageCache = new HashMap<>();
-	private final ResourceLoader<Image> imageResourceLoader;
+	private final FxImageLoaderAdapter imageResourceLoader;
 
 
 	public FighterFactory() {
 		nameGenerator = new NameGenerator();
 		random = new Random();
-		imageResourceLoader = new ResourceLoader<>(Image::new);
+		imageResourceLoader = new FxImageLoaderAdapter();
 
 	}
 
@@ -41,7 +42,7 @@ public final class FighterFactory {
 		if (imageCache.containsKey(path)) {
 			return imageCache.get(path);
 		}
-		this.imageCache.put(path, imageResourceLoader.loadResource(ClassLoader.getSystemClassLoader(), path));
+		this.imageCache.put(path, imageResourceLoader.loadImage(path));
 		return this.imageCache.get(path);
 
 	}
